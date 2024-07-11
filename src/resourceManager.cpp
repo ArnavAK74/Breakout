@@ -1,11 +1,3 @@
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
 #include "resourceManager.h"
 
 #include <iostream>
@@ -43,10 +35,9 @@ Texture2D& ResourceManager::GetTexture(std::string name)
 
 void ResourceManager::Clear()
 {
-    // (properly) delete all shaders	
     for (auto iter : Shaders)
         glDeleteProgram(iter.second.ID);
-    // (properly) delete all textures
+    
     for (auto iter : Textures)
         glDeleteTextures(1, &iter.second.ID);
 }
@@ -66,10 +57,9 @@ Shader ResourceManager::loadShaderFromFile(const char *vShaderFile, const char *
         // read file's buffer contents into streams
         vShaderStream << vertexShaderFile.rdbuf();
         fShaderStream << fragmentShaderFile.rdbuf();
-        // close file handlers
         vertexShaderFile.close();
         fragmentShaderFile.close();
-        // convert stream into string
+
         vertexCode = vShaderStream.str();
         fragmentCode = fShaderStream.str();
         // if geometry shader path is present, also load a geometry shader
@@ -97,7 +87,6 @@ Shader ResourceManager::loadShaderFromFile(const char *vShaderFile, const char *
 
 Texture2D ResourceManager::loadTextureFromFile(const char *file, bool alpha)
 {
-    // create texture object
     Texture2D texture;
     if (alpha)
     {
@@ -109,7 +98,6 @@ Texture2D ResourceManager::loadTextureFromFile(const char *file, bool alpha)
     unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
     // now generate texture
     texture.Generate(width, height, data);
-    // and finally free image data
     stbi_image_free(data);
     return texture;
 }
